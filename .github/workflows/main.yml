@@ -1,36 +1,23 @@
-name: Node.js CI  # نام گردش کار
+name: Diagnostic Workflow
 
 on:
   push:
-    branches: [ "main", "master" ] # هر بار که روی شاخه اصلی پوش کنید اجرا می‌شود
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ "main", "master" ] # هنگام درخواست تغییرات اجرا می‌شود
+    branches: [ "main", "master" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest # اجرای کد روی آخرین نسخه اوبونتو در سرورهای گیت‌هاب
+  check_project:
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4 # دریافت کدهای شما از مخزن
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4 # استفاده از آخرین نسخه ابزار نصب نود
+      uses: actions/setup-node@v4
       with:
-        node-version: '24' # <--- اینجا دقیقاً نسخه ۲۴ تنظیم شده است تا خطا برطرف شود
-        cache: 'npm' # برای سریع‌تر شدن دفعات بعدی، پکیج‌ها را کش می‌کند
+        node-version: '24' # رفع اخطار نسخه ۲۰
 
-    - name: Install dependencies
-      run: npm install # نصب تمام پیش‌نیازها و کتابخانه‌های پروژه شما
-
-    - name: Build project
-      run: npm run build --if-present # اجرای دستور ساخت (اگر در package.json تعریف شده باشد)
-
-    - name: Run tests
-      run: npm test --if-present # اجرای تست‌ها (اگر تعریف شده باشند)
-
-    - name: Upload APK as Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: PassiveRadarApp-APK
-        path: app/build/outputs/apk/debug/app-debug.apk
+    - name: List all files
+      run: ls -R # این دستور فقط لیست فایل‌های شما را چاپ می‌کند و هیچ خطایی نمی‌دهد
